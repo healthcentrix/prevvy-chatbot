@@ -1,0 +1,22 @@
+{
+    "parser": "@typescript-eslint/parser",
+    "extends": [
+        "plugin:@typescript-eslint/recommended",
+        "prettier/@typescript-eslint"
+    ],
+    "parserOptions": {
+        "ecmaVersion": 2018,
+        "sourceType": "module"
+    },
+    "rules": {
+        "prefer-const": "off",
+        "@typescript-eslint/ban-types": "off",
+        "@typescript-eslint/no-unused-vars": "error",
+        "@typescript-eslint/no-use-before-define": "error",
+        "@typescript-eslint/no-unused-expressions": "error",
+        "@typescript-eslint/no-extra-parens": "off",
+        "@typescript-eslint/no-empty-function": "error",
+        "@typescript-eslint/no-dupe-class-members": "error",
+        "@typescript-eslint/no-extra-semi": "error"
+    }
+}

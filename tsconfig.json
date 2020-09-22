@@ -1,0 +1,31 @@
+//Documentation https://www.typescriptlang.org/docs/handbook/tsconfig-json.html
+
+{
+    "compilerOptions": {
+        "resolveJsonModule": true,
+        "strictNullChecks": false,
+        "noImplicitAny": false,
+        "target": "es2018",
+        "module": "commonjs",
+        "allowJs": true,
+        "outDir": "./dist",
+        "rootDir": "./",
+        "strict": true,
+        "moduleResolution": "node",
+        "types": ["node", "jest"],
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true
+    },
+    "exclude": [
+        "ssm.js",
+        "local-sync.js",
+        "node_modules",
+        "lambda-layers",
+        "lambda-workers",
+        "gc-external-events",
+        ".git",
+        "dist",
+        "out"
+    ]
+}

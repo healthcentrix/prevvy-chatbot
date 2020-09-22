@@ -1,0 +1,7 @@
+**/__tests__/*
+**/node_modules/*
+**/dist/*
+local-sync.js
+deploy-version-tagging.js
+ssm.js
+
