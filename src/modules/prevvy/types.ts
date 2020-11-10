@@ -1,11 +1,11 @@
-enum CommunicationMedium {
+export enum CommunicationMedium {
     SMS = "sms",
     CHAT = "chat",
     GOOGLE_ASSISTANT = "gassistant",
     ALEXA = "alexa",
 }
 
-enum DialogType {
+export enum DialogType {
     MONITORING_ACTIVITY = "MONITORING_ACTIVITY",
 }
 
@@ -27,16 +27,16 @@ export interface IPrevvyComunicationRequest {
 export interface IPrevvyComunicationResponse {
     status: boolean;
     error?: string;
-    message_id?: string;
 }
 
 export interface IPrevvyComunicationData {
-    responseCount: number;
-    responses: Array<string>;
-    observationsCount: number;
+    dialogType: DialogType;
     communicationRequestID: string;
-    codeObservation: string;
-    lang: string;
-    patientLang: string;
-    unitType: string;
+    medium: CommunicationMedium;
+    language: string;
+    userId: string;
+    userName: string;
+    name: string;
+    title: string;
+    time: string;
 }
