@@ -1,12 +1,27 @@
+enum CommunicationMedium {
+    SMS = "sms",
+    CHAT = "chat",
+    GOOGLE_ASSISTANT = "gassistant",
+    ALEXA = "alexa",
+}
+
+enum DialogType {
+    MONITORING_ACTIVITY = "MONITORING_ACTIVITY",
+}
+
 export interface IPrevvyComunicationRequest {
-    communicationRequestID: string;
-    patientRef: string;
-    codeObservation: string;
-    phoneNumber: string;
-    unitType: string;
-    observations: Array<string>;
-    patientLang: string;
-    lang: string;
+    dialog_type: DialogType;
+    communication_request_id: string;
+    medium: CommunicationMedium;
+    language: string;
+    user_id: string;
+    user_name: string;
+    name: string;
+    title: string;
+    mobile_phone_number: string;
+    message_text: string;
+    message_html?: string;
+    time: string;
 }
 
 export interface IPrevvyComunicationResponse {
