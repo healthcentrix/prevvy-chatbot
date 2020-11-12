@@ -1,6 +1,4 @@
 import express, { Application } from "express";
-import dotenv from "dotenv";
-dotenv.config();
 
 import cors, { CorsOptions } from "cors";
 import helmet from "helmet";

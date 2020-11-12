@@ -1,58 +1,112 @@
-import {IPrevvyComunicationData} from "../prevvy/types"
-import _ from "lodash"
-import {IDialogFlowResponse} from "./types"
+import { IPrevvyComunicationData, DialogType } from "../prevvy/types";
+import _ from "lodash";
+import { IPrevvyFeedBackData, IDialogFlowParameter } from "./types";
+import axios from "axios";
 
-export class DialogFlowService{
+export class DialogFlowService {
     private redis: any;
     private translate: any;
 
-    constructor(redis: any, translate: any){
+    constructor(redis: any, translate: any) {
         this.redis = redis;
         this.translate = translate;
     }
 
-    public async getPatientObservation(sessionAgent: any, sessionId: string ,fullFillmentMessages: Array<any>, queryText: string): Promise<IDialogFlowResponse>{
-        const response: IDialogFlowResponse = {
-            fulfillmentMessages: fullFillmentMessages,
-        };
-        const splittedSession: string = _.split(sessionAgent, "/sessions/") [1];
+    public async getPatientObservation(
+        sessionAgent: any,
+        sessionId: string,
+        queryText: string,
+        parameters: IDialogFlowParameter,
+        fullfilment: string
+    ): Promise<void> {
+        const splittedSession: string = _.split(sessionAgent, "/sessions/")[1];
         const session: string = sessionId || splittedSession;
 
         const stringData: string = await this.redis.getString(session);
         const data: IPrevvyComunicationData = JSON.parse(stringData);
 
-        if(!data){
-            response.fulfillmentText = 'Request cannot be answered';   
-            response.fulfillmentMessages[0].text[0] = 'Request cannot be answered';  
-            return response;
+        if (data) {
+            let feedBackData: IPrevvyFeedBackData = {};
+
+            switch (data.dialogType) {
+                case DialogType.MONITORING_ACTIVITY:
+                case DialogType.FITNESS_ACTIVITY:
+                    feedBackData = this.monitoringFitnessActivity(
+                        parameters,
+                        data.communicationRequestID
+                    );
+                    break;
+
+                case DialogType.ASSESMENT:
+                    feedBackData = this.assesmentActivity(
+                        fullfilment,
+                        data.communicationRequestID
+                    );
+                    break;
+                case DialogType.MEDICATION_ACTIVITY:
+                case DialogType.APPOINMENT_ACTIVITY:
+                    feedBackData = await this.medicationAppoinmentActivity(
+                        queryText,
+                        data.communicationRequestID
+                    );
+                    break;
+
+                default:
+                    break;
+            }
+
+            try {
+                await axios.post(process.env.PREVVY_FEEDBACK_URL, feedBackData);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+    }
+
+    private monitoringFitnessActivity(
+        parameters: IDialogFlowParameter,
+        communicationRequestID: string
+    ): IPrevvyFeedBackData {
+        const done = parameters !== null && parameters !== {};
+        const feedBackData: IPrevvyFeedBackData = {
+            communication_request_id: communicationRequestID,
+            done: done,
+        };
+        if (done) {
+            feedBackData.capture_secuence = parameters;
+        }
+        return feedBackData;
+    }
+
+    private async medicationAppoinmentActivity(
+        queryText: string,
+        communicationRequestID
+    ): Promise<IPrevvyFeedBackData> {
+        const translatedQuery = await this.translate.translate(queryText, "en");
+
+        const done = !_.includes(_.toLower(translatedQuery), "no");
+        const feedBackData: IPrevvyFeedBackData = {
+            communication_request_id: communicationRequestID,
+            done: done,
+        };
+
+        if (!done) {
+            feedBackData.reason_not_done = translatedQuery;
         }
 
-        let prevvyResponse: string, translatedFullfilmentMessage: string;
+        return feedBackData;
+    }
 
-        try {
+    private assesmentActivity(
+        fullfilment: string,
+        communicationRequestID
+    ): IPrevvyFeedBackData {
+        const feedBackData: IPrevvyFeedBackData = {
+            communication_request_id: communicationRequestID,
+            done: true,
+            questionnarie: fullfilment,
+        };
 
-        [prevvyResponse, translatedFullfilmentMessage] = await Promise.all([this.translate.translate(queryText, data.lang),this.translate.translate(fullFillmentMessages[0].text[0], data.patientLang)])
-       
-        } catch (error) {
-            response.fulfillmentText = 'Request cannot be answered';   
-            response.fulfillmentMessages[0].text[0] = 'Request cannot be answered';  
-            return response;
-        }
-       
-        data.responses.push(prevvyResponse);
-        ++data.responseCount;
-
-        if(data.responseCount === data.observationsCount){
-            //Send observations to Prevvy
-
-            this.redis.removeKey(session);
-            return response;
-        }
-
-        await this.redis.setString(session, JSON.stringify(data))
-
-        response.fulfillmentText = translatedFullfilmentMessage;     
-        return response;
- }
-
+        return feedBackData;
+    }
 }

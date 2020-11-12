@@ -7,6 +7,10 @@ export enum CommunicationMedium {
 
 export enum DialogType {
     MONITORING_ACTIVITY = "MONITORING_ACTIVITY",
+    FITNESS_ACTIVITY = "FITNESS_ACTIVITY",
+    MEDICATION_ACTIVITY = "MEDICATION_ACTIVITY",
+    APPOINMENT_ACTIVITY = "APPOINMENT_ACTIVITY",
+    ASSESMENT = "ASSESMENT",
 }
 
 export interface IPrevvyComunicationRequest {
