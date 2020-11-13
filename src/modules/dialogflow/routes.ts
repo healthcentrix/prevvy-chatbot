@@ -10,8 +10,8 @@ const redis: RedisHelper = new RedisHelper(
 );
 
 const translate: GoogleTranslateHelper = new GoogleTranslateHelper(
-    process.env.TRANSLATE_PROJECT_ID,
-    process.env.TRANSLATE_PROJECT_KEY
+    process.env.GOOGLE_TRANSLATE_PROJECT_ID,
+    process.env.GOOGLE_TRANSLATE_PROJECT_KEY
 );
 
 const dialogFlow: DialogFlowService = new DialogFlowService(redis, translate);
