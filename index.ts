@@ -39,6 +39,6 @@ if (process.env.ENV === "dev") {
     app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 }
 
-app.listen(process.env.PORT, () => {
-    console.log(`Running on port ${process.env.PORT}`);
+app.listen(process.env.CHATBOT_PORT, () => {
+    console.log(`Running on port ${process.env.CHATBOT_PORT}`);
 });
