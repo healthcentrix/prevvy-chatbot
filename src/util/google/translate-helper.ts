@@ -3,10 +3,8 @@ import { Translate } from "@google-cloud/translate/build/src/v2";
 export class GoogleTranslateHelper {
     private client: Translate;
 
-    constructor(projectiId: string) {
-        this.client = new Translate({
-            projectId: projectiId,
-        });
+    constructor() {
+        this.client = new Translate();
     }
 
     public async translate(text: string, lang: string): Promise<string> {
