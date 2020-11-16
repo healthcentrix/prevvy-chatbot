@@ -12,8 +12,7 @@ export const router: Router = Router();
 
 const redis: RedisHelper = new RedisHelper(
     process.env.REDIS_HOST,
-    parseInt(process.env.REDIS_PORT),
-    process.env.REDIS_PASSWORD
+    parseInt(process.env.REDIS_PORT)
 );
 const twilio: TwilioHelper = new TwilioHelper(
     process.env.TWILIO_ACCOUNT_SID,

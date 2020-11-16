@@ -5,8 +5,7 @@ import { DialogFlowService } from "./services";
 
 const redis: RedisHelper = new RedisHelper(
     process.env.REDIS_HOST,
-    parseInt(process.env.REDIS_PORT),
-    process.env.REDIS_PASSWORD
+    parseInt(process.env.REDIS_PORT)
 );
 
 const translate: GoogleTranslateHelper = new GoogleTranslateHelper(
