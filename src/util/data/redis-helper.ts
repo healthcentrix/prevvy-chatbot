@@ -74,12 +74,10 @@ export class RedisHelper {
                     if (err) {
                         return reject(err);
                     }
-               
                 });
             });
         };
 
-       await removeKeyPromise();
-     
+        await removeKeyPromise();
     }
 }
