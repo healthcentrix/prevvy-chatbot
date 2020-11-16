@@ -3,10 +3,9 @@ import { Translate } from "@google-cloud/translate/build/src/v2";
 export class GoogleTranslateHelper {
     private client: Translate;
 
-    constructor(projectiId: string, key: string) {
+    constructor(projectiId: string) {
         this.client = new Translate({
             projectId: projectiId,
-            key: key,
         });
     }
 

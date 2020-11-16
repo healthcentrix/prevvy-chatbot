@@ -20,8 +20,7 @@ const twilio: TwilioHelper = new TwilioHelper(
 );
 
 const translate: GoogleTranslateHelper = new GoogleTranslateHelper(
-    process.env.GOOGLE_TRANSLATE_PROJECT_ID,
-    process.env.GOOGLE_TRANSLATE_PROJECT_KEY
+    process.env.GOOGLE_TRANSLATE_PROJECT_ID
 );
 
 const prevvyService = new PrevvyService(redis, twilio, translate);
