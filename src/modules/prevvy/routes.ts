@@ -12,8 +12,7 @@ export const router: Router = Router();
 
 const redis: RedisHelper = new RedisHelper(
     process.env.REDIS_HOST,
-    parseInt(process.env.REDIS_PORT),
-    process.env.REDIS_PASSWORD
+    parseInt(process.env.REDIS_PORT)
 );
 const twilio: TwilioHelper = new TwilioHelper(
     process.env.TWILIO_ACCOUNT_SID,
@@ -21,8 +20,7 @@ const twilio: TwilioHelper = new TwilioHelper(
 );
 
 const translate: GoogleTranslateHelper = new GoogleTranslateHelper(
-    process.env.GOOGLE_TRANSLATE_PROJECT_ID,
-    process.env.GOOGLE_TRANSLATE_PROJECT_KEY
+    process.env.GOOGLE_TRANSLATE_PROJECT_ID
 );
 
 const prevvyService = new PrevvyService(redis, twilio, translate);
