@@ -10,9 +10,10 @@ export class RedisHelper {
         tls: boolean = false
     ) {
         this.client = new RedisClient({
-            host: "redis",
-            port: 6379,
-            password: "asdf",
+            host: host,
+            port: port,
+            password: password,
+            tls: tls,
         });
     }
 
