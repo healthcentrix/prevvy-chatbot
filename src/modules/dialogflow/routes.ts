@@ -6,7 +6,7 @@ import { DialogFlowService } from "./services";
 const redis: RedisHelper = new RedisHelper(
     process.env.REDIS_HOST,
     parseInt(process.env.REDIS_PORT),
-    process.env.REDIS_PASSWORD
+    process.env.REDIS_PASS
 );
 
 const translate: GoogleTranslateHelper = new GoogleTranslateHelper();
@@ -16,7 +16,7 @@ const dialogFlow: DialogFlowService = new DialogFlowService(redis, translate);
 export const router: Router = Router();
 
 router.post(
-    "/fullfilment/",
+    "/fullfilment",
     async (req: Request, res: Response): Promise<Response> => {
         const {
             queryText,
