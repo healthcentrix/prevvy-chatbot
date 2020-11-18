@@ -39,7 +39,7 @@ app.use("/chatbot/prevvy", prevvyRouter);
 
 //Check enviroment to swagger docs
 if (process.env.ENV === "dev") {
-    app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+    app.use("/chatbot/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 }
 
 app.listen(process.env.CHATBOT_PORT, () => {
