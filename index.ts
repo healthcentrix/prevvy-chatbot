@@ -1,5 +1,3 @@
-import dotenv from "dotenv";
-dotenv.config();
 import express, { Application } from "express";
 import cors, { CorsOptions } from "cors";
 import helmet from "helmet";
@@ -34,8 +32,8 @@ app.use(
 );
 
 //Routes
-app.use("/dialogflow", dialogFlowRouter);
-app.use("/prevvy", prevvyRouter);
+app.use("/chatbot/dialogflow", dialogFlowRouter);
+app.use("/chatbot/prevvy", prevvyRouter);
 
 //Check enviroment to swagger docs
 if (process.env.ENV === "dev") {
