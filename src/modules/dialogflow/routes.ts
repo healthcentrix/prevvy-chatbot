@@ -34,6 +34,8 @@ router.post(
             fulfillmentMessages[0].text
         );
 
-        return res.json();
+        return res.json({
+            fulfillmentMessages: fulfillmentMessages,
+        });
     }
 );
