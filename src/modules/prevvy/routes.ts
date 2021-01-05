@@ -28,6 +28,8 @@ const prevvyService = new PrevvyService(redis, twilio, translate);
 router.post(
     "/conversation",
     async (req: Request, res: Response): Promise<Response> => {
+        console.log("Body");
+        console.log(req.body);
         const prevvyRequestBody: IPrevvyComunicationRequest = req.body;
         const response: IPrevvyComunicationResponse = await prevvyService.startPatientComunication(
             prevvyRequestBody,
