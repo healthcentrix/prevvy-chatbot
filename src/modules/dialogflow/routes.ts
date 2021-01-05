@@ -36,6 +36,7 @@ router.post(
 
         return res.json({
             fulfillmentMessages: fulfillmentMessages,
+            outputContexts: req.body.outputContexts,
         });
     }
 );
