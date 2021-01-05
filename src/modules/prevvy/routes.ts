@@ -33,7 +33,6 @@ router.post(
             prevvyRequestBody,
             process.env.PREVVY_PHONE_NUMBER
         );
-        console.log(response);
         return res.status(200).json(response);
     }
 );
