@@ -23,8 +23,6 @@ router.post(
             parameters,
             fulfillmentMessages,
         } = req.body.queryResult;
-        console.log("Body");
-        console.log(req.body.queryResult);
 
         await dialogFlow.getPatientObservation(
             req.body.session,

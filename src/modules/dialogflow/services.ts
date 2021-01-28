@@ -56,11 +56,8 @@ export class DialogFlowService {
             }
 
             try {
-                console.log("Response to prevvy");
-                console.log(feedBackData);
                 await axios.post(process.env.PREVVY_FEEDBACK_URL, feedBackData);
             } catch (error) {
-                console.log("Error");
                 console.log(error);
             }
         }

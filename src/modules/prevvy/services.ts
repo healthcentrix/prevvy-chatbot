@@ -3,6 +3,7 @@ import {
     IPrevvyComunicationResponse,
     IPrevvyComunicationData,
     CommunicationMedium,
+    IPrevvySendSMSResponse,
 } from "./types";
 
 export class PrevvyService {
@@ -51,12 +52,11 @@ export class PrevvyService {
 
             switch (medium) {
                 case CommunicationMedium.SMS:
-                    await this.twilio.sendSMS(
+                    await this.sendSMS(
                         fromNumber,
                         mobilePhoneNumber,
                         translatedMessage
                     );
-
                     break;
                 default:
                     break;
@@ -86,5 +86,31 @@ export class PrevvyService {
         } finally {
             return response;
         }
+    }
+
+    public async sendSMS(
+        fromNumber: string,
+        mobile: string,
+        message: string
+    ): Promise<IPrevvySendSMSResponse> {
+        let response: IPrevvySendSMSResponse = {
+            status: false,
+        };
+        try {
+            const messageId = await this.twilio.sendSMS(
+                fromNumber,
+                mobile,
+                message
+            );
+
+            response = {
+                status: true,
+                messageId: messageId,
+            };
+        } catch (error) {
+            console.log(error);
+        }
+
+        return response;
     }
 }

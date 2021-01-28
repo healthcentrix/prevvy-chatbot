@@ -2,6 +2,8 @@ import { Router, Request, Response } from "express";
 import {
     IPrevvyComunicationRequest,
     IPrevvyComunicationResponse,
+    IPrevvySendSMSRequest,
+    IPrevvySendSMSResponse,
 } from "./types";
 import { TwilioHelper } from "../../util/twilio/twilio-helper";
 import { RedisHelper } from "../../util/data/redis-helper";
@@ -28,12 +30,23 @@ const prevvyService = new PrevvyService(redis, twilio, translate);
 router.post(
     "/conversation",
     async (req: Request, res: Response): Promise<Response> => {
-        console.log("Body");
-        console.log(req.body);
         const prevvyRequestBody: IPrevvyComunicationRequest = req.body;
         const response: IPrevvyComunicationResponse = await prevvyService.startPatientComunication(
             prevvyRequestBody,
             process.env.PREVVY_PHONE_NUMBER
+        );
+        return res.status(200).json(response);
+    }
+);
+
+router.post(
+    "/sms",
+    async (req: Request, res: Response): Promise<Response> => {
+        const { message, mobile }: IPrevvySendSMSRequest = req.body;
+        const response = await prevvyService.sendSMS(
+            process.env.PREVVY_PHONE_NUMBER,
+            mobile,
+            message
         );
         return res.status(200).json(response);
     }
