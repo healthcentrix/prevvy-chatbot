@@ -105,10 +105,17 @@ export class PrevvyService {
 
             response = {
                 status: true,
-                messageId: messageId,
+                message_id: messageId,
             };
         } catch (error) {
             console.log(error);
+
+            let errorMessage = "Network Error";
+            if (error.response) {
+                errorMessage = error.response;
+            }
+
+            response.error_message = errorMessage;
         }
 
         return response;

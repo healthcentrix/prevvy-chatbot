@@ -47,7 +47,7 @@ export interface IPrevvyComunicationData {
 
 export interface IPrevvySendSMSResponse {
     status: boolean;
-    messageId?: string;
+    message_id?: string;
     error_message?: string;
 }
 
