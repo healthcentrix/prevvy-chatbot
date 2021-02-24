@@ -44,3 +44,14 @@ export interface IPrevvyComunicationData {
     title: string;
     time: string;
 }
+
+export interface IPrevvySendSMSResponse {
+    status: boolean;
+    message_id?: string;
+    error_message?: string;
+}
+
+export interface IPrevvySendSMSRequest {
+    message: string;
+    mobile: string;
+}

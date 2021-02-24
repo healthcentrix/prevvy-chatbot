@@ -6,20 +6,17 @@ import { DialogFlowService } from "./services";
 const redis: RedisHelper = new RedisHelper(
     process.env.REDIS_HOST,
     parseInt(process.env.REDIS_PORT),
-    process.env.REDIS_PASSWORD
+    process.env.REDIS_PASS
 );
 
-const translate: GoogleTranslateHelper = new GoogleTranslateHelper(
-    process.env.TRANSLATE_PROJECT_ID,
-    process.env.TRANSLATE_PROJECT_KEY
-);
+const translate: GoogleTranslateHelper = new GoogleTranslateHelper();
 
 const dialogFlow: DialogFlowService = new DialogFlowService(redis, translate);
 
 export const router: Router = Router();
 
 router.post(
-    "/fullfilment/",
+    "/fullfilment",
     async (req: Request, res: Response): Promise<Response> => {
         const {
             queryText,
@@ -35,6 +32,9 @@ router.post(
             fulfillmentMessages[0].text
         );
 
-        return res.json();
+        return res.json({
+            fulfillmentMessages: fulfillmentMessages,
+            outputContexts: req.body.outputContexts,
+        });
     }
 );
