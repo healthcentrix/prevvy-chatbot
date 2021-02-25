@@ -1,35 +1,23 @@
 namespace: prod
 resources:
-- ../../base
+  - ../../base
+
 
 configmapGenerator:
-- name: frontend.properties
-  literals:
-    # Secrets
-    - KEYCLOAK_JSON=prevvy1-prod-frontend-keycloak-keycloak-json
-    # Environment variables
-    - FRONTEND_LOGIN_URL=https://services.prod.prevvy.co/prevvy.html#home
-    - RECAPTCHA_SITE_KEY_V3=6LeJA-QZAAAAAFqiXr_Q9DuBWhYxyW6GFhWHcGX
-    - PREVVY_FHIR_URL=https://services.prod.prevvy.co/microservices/prevvy/
-    - PREVVY_MAILBOX_URL=https://services.prod.prevvy.co/microservices/
-    - RIOT_CHAT_URL=https://chat.prod.prevvy.co:8765
-    - RIOT_HOMESERVER_URL=https://chat.prod.prevvy.co:8091
-    - RIOT_IDENTITY_SERVER_URL=https://chat.prod.prevvy.co:8091
-    - KEYCLOAK_HOST=https://auth.prod.prevvy.co/auth
-    - FROM=Source code setup.json
-    - PREVVY_JSON_PRETTY=true
-    - PREVVY_DEV_BROWSER=true
-    - VIDEO_SERVER_ADDRESS=https://video.prod.prevvy.co/
-    - JAMES_DOMAIN=prevvy.co
-    - RECAPTCHA_API=https://www.google.com/recaptcha/api.js
-    - CMS_HOST=https://cms.develop.prevvy.co
-    - CMS_SITE=https://cms.develop.prevvy.co/site
-    - CMS_HEALTHY_LIFE=https://cms.develop.prevvy.co/site/cdcfeed?id=133792
-    - CMS_CAREPLAN=https://cms.develop.prevvy.co/site/careplans
-    - CMS_ACTIVITIES=https://cms.develop.prevvy.co/site/activities
-    - HL7_FHIR_URL=https://www.hl7.org/fhir/
-    - SUPPORT_PATIENT_URL=https://prevvy.freshdesk.com/support/home
-    - SUPPORT_PRACTITIONER_URL=https://prevvy.freshdesk.com/support/home
-    - KEYCLOAK_JSON_SECRET=sm://prevvy1_prod_frontend_keycloak_json
+  - name: chatbot.properties
+    literals:
+      # Secrets
+      #  - TWILIO_ACCOUNT_SID=ACb79475972bb14f47b555165ee40b20a7
+      #  - TWILIO_AUTH_TOKEN=4cc257617ab6d023ff85d816b6195c90
+      #  - REDIS_PASS
+      # Environment variables
+      - PROJECT=prevvy1
+      - ENVIRONMENT=prod
+      - ENV=dev
+      - CHATBOT_PORT=8080
+      - PREVVY_PHONE_NUMBER=+12057936757
+      - PREVVY_FEEDBACK_URL=https://services.prod.prevvy.co/chatbot/feedback
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
 generatorOptions:
   disableNameSuffixHash: true
