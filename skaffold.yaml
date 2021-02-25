@@ -1,0 +1,40 @@
+apiVersion: skaffold/v2beta10
+kind: Config
+metadata:
+  name: chatbot
+build:
+  artifacts:
+    - image: gcr.io/prevvy1/chatbot
+  tagPolicy:
+    sha256: {}
+
+deploy:
+  kustomize:
+    paths:
+      - ./config/envs/develop
+    defaultNamespace: develop
+  kubeContext: gke_prevvy1_us-central1-b_prevvy2
+
+
+profiles:
+  - name: demo
+    deploy:
+      kustomize:
+        paths:
+          - ./config/envs/demo
+        defaultNamespace: demo
+      kubeContext: gke_prevvy1_us-central1-b_prevvy2
+  - name: test
+    deploy:
+      kustomize:
+        paths:
+          - ./config/envs/test
+        defaultNamespace: test
+      kubeContext: gke_prevvy1_us-central1-b_prevvy2
+  - name: prod
+    deploy:
+      kustomize:
+        paths:
+          - ./config/envs/prod
+        defaultNamespace: prod
+      kubeContext: gke_prevvy1_us-central1-b_prevvy2

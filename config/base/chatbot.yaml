@@ -1,0 +1,63 @@
+#
+#  Chatbot  Knative deployment
+#
+#  Secrets:
+#  ${PROJECT}-${NAMESPACE}-chatbot-twilio-account-sid
+#  ${PROJECT}-${NAMESPACE}-chatbot-twilio-auth-token
+#  ${PROJECT}-${NAMESPACE}-chatbot-twilio-redis-pass"
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: chatbot
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/minScale: '1'
+    spec:
+      serviceAccountName: chatbot
+      containers:
+      - image: gcr.io/prevvy1/chatbot
+        imagePullPolicy: Always
+        #command: ["/bin/sh","-c","sleep 9999" ]
+        ports:
+        - containerPort: 8080
+        env:
+        # Internal variable enviroment created with Secrets in Secret Manager
+        #        REDIS_PASS
+        # Environment Variables
+        - name: PROJECT
+          valueFrom:
+            configMapKeyRef:
+              name: chatbot.properties
+              key: PROJECT
+        - name: ENVIRONMENT
+          valueFrom:
+            configMapKeyRef:
+              name: chatbot.properties
+              key: ENVIRONMENT
+        - name: ENV
+          valueFrom:
+            configMapKeyRef:
+              name: chatbot.properties
+              key: ENV
+        - name: CHATBOT_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: chatbot.properties
+              key: CHATBOT_PORT
+        - name: PREVVY_PHONE_NUMBER
+          valueFrom:
+            configMapKeyRef:
+              name: chatbot.properties
+              key: PREVVY_PHONE_NUMBER
+        - name: REDIS_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: chatbot.properties
+              key: REDIS_HOST
+        - name: ENVIRONMENT
+          valueFrom:
+            configMapKeyRef:
+              name: chatbot.properties
+              key: ENVIRONMENT

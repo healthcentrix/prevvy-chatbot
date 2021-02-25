@@ -1,0 +1,23 @@
+namespace: test
+resources:
+- ../../base
+
+
+configmapGenerator:
+- name: chatbot.properties
+  literals:
+    # Secrets
+    #  - TWILIO_ACCOUNT_SID=ACb79475972bb14f47b555165ee40b20a7
+    #  - TWILIO_AUTH_TOKEN=4cc257617ab6d023ff85d816b6195c90
+    #  - REDIS_PASS
+    # Environment variables
+    - PROJECT=prevvy1
+    - ENVIRONMENT=test
+    - ENV=dev
+    - CHATBOT_PORT=8080
+    - PREVVY_PHONE_NUMBER=+12057936757
+    - PREVVY_FEEDBACK_URL=https://services.test.prevvy.co/chatbot/feedback
+    - REDIS_HOST=redis
+    - REDIS_PORT=6379
+generatorOptions:
+  disableNameSuffixHash: true
