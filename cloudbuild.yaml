@@ -1,15 +1,16 @@
 steps:
-- name: 'gcr.io/cloud-builders/docker'
-  args: [ 'build', '-t', 'gcr.io/$PROJECT_ID/chatbot:$BUILD_ID', '.' ]
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'gcr.io/$PROJECT_ID/chatbot:$BUILD_ID']
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['tag', 'gcr.io/$PROJECT_ID/chatbot:$BUILD_ID','gcr.io/$PROJECT_ID/chatbot:latest']
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'gcr.io/$PROJECT_ID/chatbot:latest']
-- name: 'gcr.io/prevvy1/deployments'
-  args:
-    - /root/prevvy-deployments/env_admin/final_deployer.sh
-    - prevvy/chatbot
-    - develop
-    - $BUILD_ID
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:alpine'
+    args:
+      - gcloud
+      - container
+      - clusters
+      - get-credentials
+      - prevvy2
+      - --zone=us-central1-b
+  - name: 'gcr.io/k8s-skaffold/skaffold'
+    args:
+      - skaffold
+      - run
+      - -f=skaffold.yaml
+      - -p
+      - test
