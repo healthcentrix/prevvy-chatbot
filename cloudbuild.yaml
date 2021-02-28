@@ -14,4 +14,3 @@ steps:
       - -f=skaffold.yaml
       - -p
       - test
-      -
