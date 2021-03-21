@@ -5,7 +5,7 @@ steps:
       - container
       - clusters
       - get-credentials
-      - prevvy2
+      - prevvy
       - --zone=us-central1-b
   - name: 'gcr.io/k8s-skaffold/skaffold'
     args:
@@ -13,4 +13,4 @@ steps:
       - run
       - -f=skaffold.yaml
       - -p
-      - test
+      - develop

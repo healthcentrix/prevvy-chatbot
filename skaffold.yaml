@@ -13,7 +13,7 @@ deploy:
     paths:
       - ./config/envs/develop
     defaultNamespace: develop
-  kubeContext: gke_prevvy1_us-central1-b_prevvy2
+  kubeContext: gke_prevvy1_us-central1-b_prevvy
 
 
 profiles:
@@ -23,18 +23,18 @@ profiles:
         paths:
           - ./config/envs/demo
         defaultNamespace: demo
-      kubeContext: gke_prevvy1_us-central1-b_prevvy2
+      kubeContext: gke_prevvy1_us-central1-b_prevvy
   - name: test
     deploy:
       kustomize:
         paths:
           - ./config/envs/test
         defaultNamespace: test
-      kubeContext: gke_prevvy1_us-central1-b_prevvy2
+      kubeContext: gke_prevvy1_us-central1-b_prevvy
   - name: prod
     deploy:
       kustomize:
         paths:
           - ./config/envs/prod
         defaultNamespace: prod
-      kubeContext: gke_prevvy1_us-central1-b_prevvy2
+      kubeContext: gke_prevvy1_us-central1-b_prevvy
