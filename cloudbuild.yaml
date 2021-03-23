@@ -12,5 +12,3 @@ steps:
       - skaffold
       - run
       - -f=skaffold.yaml
-      - -p
-      - develop
