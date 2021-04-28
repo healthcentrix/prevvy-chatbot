@@ -70,8 +70,10 @@ export class RedisHelper {
     public async removeKey(key: string): Promise<void> {
         const removeKeyPromise = (): Promise<string> => {
             return new Promise((resolve, reject) => {
-                this.client.del(key, (err) => {
+                this.client.del((err, resp) => {
                     if (err) {
+                        console.log("Redis error");
+                        console.log(err);
                         return reject(err);
                     }
                 });
