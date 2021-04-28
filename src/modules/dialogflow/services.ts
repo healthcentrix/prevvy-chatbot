@@ -34,6 +34,7 @@ export class DialogFlowService {
         const stringData: string = await this.redis.getString(session);
         const data: IPrevvyComunicationData = JSON.parse(stringData);
 
+        console.log("***Data");
         console.log(data);
 
         if (data) {
@@ -62,6 +63,7 @@ export class DialogFlowService {
                     this.redis.removeKey(session),
                 ]);
 */
+                console.log("***Feedback");
                 console.log(feedBackData);
                 await Promise.all([this.redis.removeKey(session)]);
             } catch (error) {
@@ -73,6 +75,7 @@ export class DialogFlowService {
                 textResponse,
                 data.language || "en"
             );
+
             return translateResponse;
         }
 
