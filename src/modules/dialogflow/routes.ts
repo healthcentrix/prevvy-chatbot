@@ -32,16 +32,8 @@ router.post(
             fulfillmentMessages[0].text
         );
 
-        const fulfillmentResponse = [
-            {
-                text: {
-                    text: [response],
-                },
-            },
-        ];
-
         return res.json({
-            fulfillmentMessages: fulfillmentResponse,
+            fulfillmentText: fulfillmentResponse,
         });
     }
 );
