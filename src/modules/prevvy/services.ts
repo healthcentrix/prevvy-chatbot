@@ -21,6 +21,7 @@ export class PrevvyService {
         {
             communication_request_id: communicationRequestID,
             dialog_type: dialogType,
+            dialog_sub_type: dialogSubType,
             message_text: messageText,
             mobile_phone_number: mobilePhoneNumber,
             user_id: userId,
@@ -37,10 +38,6 @@ export class PrevvyService {
         const response: IPrevvyComunicationResponse = { status: false };
 
         let messageToTranslate = messageText;
-
-        if (medium !== CommunicationMedium.SMS) {
-            messageToTranslate = messageHtml;
-        }
 
         let translatedMessage = messageToTranslate;
 
@@ -72,6 +69,7 @@ export class PrevvyService {
                 title,
                 userId,
                 userName,
+                dialogSubType,
             };
 
             await this.redis.setString(

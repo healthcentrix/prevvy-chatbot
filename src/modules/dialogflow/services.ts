@@ -1,6 +1,15 @@
-import { IPrevvyComunicationData, DialogType } from "../prevvy/types";
+import {
+    IPrevvyComunicationData,
+    DialogType,
+    DialogSubType,
+} from "../prevvy/types";
 import _ from "lodash";
-import { IPrevvyFeedBackData, IDialogFlowParameter } from "./types";
+import {
+    IPrevvyFeedBackData,
+    IDialogFlowParameter,
+    Codes,
+    IValue,
+} from "./types";
 import axios from "axios";
 
 export class DialogFlowService {
@@ -18,7 +27,7 @@ export class DialogFlowService {
         queryText: string,
         parameters: IDialogFlowParameter,
         fullfilment: string
-    ): Promise<void> {
+    ): Promise<string> {
         const splittedSession: string = _.split(sessionAgent, "/sessions/")[1];
         const session: string = sessionId || splittedSession;
 
@@ -30,83 +39,115 @@ export class DialogFlowService {
 
             switch (data.dialogType) {
                 case DialogType.MONITORING_ACTIVITY:
-                case DialogType.FITNESS_ACTIVITY:
                     feedBackData = this.monitoringFitnessActivity(
-                        parameters,
-                        data.communicationRequestID
+                        data.dialogSubType,
+                        data.communicationRequestID,
+                        parameters
                     );
-                    break;
 
-                case DialogType.ASSESMENT:
-                    feedBackData = this.assesmentActivity(
-                        fullfilment,
-                        data.communicationRequestID
-                    );
-                    break;
-                case DialogType.MEDICATION_ACTIVITY:
-                case DialogType.APPOINMENT_ACTIVITY:
-                    feedBackData = await this.medicationAppoinmentActivity(
-                        queryText,
-                        data.communicationRequestID
-                    );
                     break;
 
                 default:
                     break;
             }
 
+            let textResponse =
+                "Thanks for your reply to the questionnaire. Prevvy has registered your answers in your Personal Health Record.";
+
             try {
-                await axios.post(process.env.PREVVY_FEEDBACK_URL, feedBackData);
+                await Promise.all([
+                    axios.post(process.env.PREVVY_FEEDBACK_URL, feedBackData),
+                    this.redis.removeKey(session),
+                ]);
             } catch (error) {
                 console.log(error);
+                textResponse = "An error occurred please try again";
             }
+
+            const translateResponse = await this.translate.translate(
+                textResponse,
+                data.language
+            );
+            return translateResponse;
         }
+
+        return "Sorry, I don't understand your request. I haven't asked you any request";
     }
 
     private monitoringFitnessActivity(
-        parameters: IDialogFlowParameter,
-        communicationRequestID: string
+        subType: DialogSubType,
+        communicationRequestID: string,
+        parameters: IDialogFlowParameter
     ): IPrevvyFeedBackData {
-        const done = parameters !== null && parameters !== {};
-        const feedBackData: IPrevvyFeedBackData = {
-            communication_request_id: communicationRequestID,
-            done: done,
-        };
-        if (done) {
-            feedBackData.capture_secuence = parameters;
+        let values: Array<IValue> = [];
+        switch (subType) {
+            case DialogSubType.BLOOD_PRESSURE:
+                values = [
+                    {
+                        code: Codes.SYSTOLIC,
+                        metric_name: "Systolic",
+                        value: parameters.systolic,
+                    },
+                    {
+                        code: Codes.DIASTOLIC,
+                        metric_name: "Diastolic",
+                        value: parameters.diastolic,
+                    },
+                    {
+                        code: Codes.HEART_RATE,
+                        metric_name: "Heart Rate",
+                        value: parameters.heart_rate,
+                    },
+                ];
+
+                return {
+                    communication_request_id: communicationRequestID,
+                    done: true,
+                    values: values,
+                };
+
+            case DialogSubType.GLUCOSE:
+                values = [
+                    {
+                        code: Codes.GLUCOSE,
+                        metric_name: "Glucose",
+                        value: parameters.glucose,
+                    },
+                ];
+
+                return {
+                    communication_request_id: communicationRequestID,
+                    done: true,
+                    values: values,
+                };
+            case DialogSubType.OXYGEN:
+                values = [
+                    {
+                        code: Codes.OXYGEN,
+                        metric_name: "Oxygen",
+                        value: parameters.oxygen,
+                    },
+                ];
+
+                return {
+                    communication_request_id: communicationRequestID,
+                    done: true,
+                    values: values,
+                };
+            case DialogSubType.TEMPERATURE:
+                values = [
+                    {
+                        code: Codes.TEMPERATURE,
+                        metric_name: "Temperature",
+                        value: parameters.temperature,
+                    },
+                ];
+
+                return {
+                    communication_request_id: communicationRequestID,
+                    done: true,
+                    values: values,
+                };
         }
-        return feedBackData;
-    }
-
-    private async medicationAppoinmentActivity(
-        queryText: string,
-        communicationRequestID
-    ): Promise<IPrevvyFeedBackData> {
-        const translatedQuery = await this.translate.translate(queryText, "en");
-
-        const done = !_.includes(_.toLower(translatedQuery), "no");
-        const feedBackData: IPrevvyFeedBackData = {
-            communication_request_id: communicationRequestID,
-            done: done,
-        };
-
-        if (!done) {
-            feedBackData.reason_not_done = translatedQuery;
-        }
-
-        return feedBackData;
-    }
-
-    private assesmentActivity(
-        fullfilment: string,
-        communicationRequestID
-    ): IPrevvyFeedBackData {
-        const feedBackData: IPrevvyFeedBackData = {
-            communication_request_id: communicationRequestID,
-            done: true,
-            questionnarie: fullfilment,
-        };
-
-        return feedBackData;
     }
 }

@@ -24,7 +24,7 @@ router.post(
             fulfillmentMessages,
         } = req.body.queryResult;
 
-        await dialogFlow.getPatientObservation(
+        const response: string = await dialogFlow.getPatientObservation(
             req.body.session,
             req.body.sessionId,
             queryText,
@@ -32,9 +32,16 @@ router.post(
             fulfillmentMessages[0].text
         );
 
+        const fulfillmentResponse = [
+            {
+                text: {
+                    text: [response],
+                },
+            },
+        ];
+
         return res.json({
-            fulfillmentMessages: fulfillmentMessages,
-            outputContexts: req.body.outputContexts,
+            fulfillmentMessages: fulfillmentResponse,
         });
     }
 );

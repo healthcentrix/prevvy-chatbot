@@ -13,8 +13,17 @@ export enum DialogType {
     ASSESMENT = "ASSESMENT",
 }
 
+export enum DialogSubType {
+    BLOOD_PRESSURE = "BLOOD_PRESSURE",
+    GLUCOSE = "GLUCOSE",
+    TEMPERATURE = "TEMPERATURE",
+    OXYGEN = "OXYGEN",
+    GENERIC = "GENERIC",
+}
+
 export interface IPrevvyComunicationRequest {
     dialog_type: DialogType;
+    dialog_sub_type: DialogSubType;
     communication_request_id: string;
     medium: CommunicationMedium;
     language: string;
@@ -35,6 +44,7 @@ export interface IPrevvyComunicationResponse {
 
 export interface IPrevvyComunicationData {
     dialogType: DialogType;
+    dialogSubType: DialogSubType;
     communicationRequestID: string;
     medium: CommunicationMedium;
     language: string;
