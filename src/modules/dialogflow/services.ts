@@ -63,6 +63,8 @@ export class DialogFlowService {
                     this.redis.removeKey(session),
                 ]);
 */
+
+                await this.redis.removeKey(session);
                 console.log("***Feedback");
                 console.log(feedBackData);
             } catch (error) {
