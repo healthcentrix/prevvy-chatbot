@@ -33,7 +33,7 @@ router.post(
         );
 
         return res.json({
-            fulfillmentText: fulfillmentResponse,
+            fulfillmentText: response,
         });
     }
 );
