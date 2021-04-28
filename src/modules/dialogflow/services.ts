@@ -65,7 +65,6 @@ export class DialogFlowService {
 */
                 console.log("***Feedback");
                 console.log(feedBackData);
-                await Promise.all([this.redis.removeKey(session)]);
             } catch (error) {
                 console.log(error);
                 textResponse = "An error occurred please try again";
