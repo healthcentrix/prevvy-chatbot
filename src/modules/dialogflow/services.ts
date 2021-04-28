@@ -67,9 +67,11 @@ export class DialogFlowService {
                 textResponse = "An error occurred please try again";
             }
 
+            console.log(data);
+
             const translateResponse = await this.translate.translate(
                 textResponse,
-                data.language
+                data.language || "en"
             );
             return translateResponse;
         }
