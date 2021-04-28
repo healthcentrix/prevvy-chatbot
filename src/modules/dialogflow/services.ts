@@ -55,10 +55,13 @@ export class DialogFlowService {
                 "Thanks for your reply to the questionnaire. Prevvy has registered your answers in your Personal Health Record.";
 
             try {
-                await Promise.all([
+                /*              await Promise.all([
                     axios.post(process.env.PREVVY_FEEDBACK_URL, feedBackData),
                     this.redis.removeKey(session),
                 ]);
+*/
+                console.log(feedBackData);
+                await Promise.all([this.redis.removeKey(session)]);
             } catch (error) {
                 console.log(error);
                 textResponse = "An error occurred please try again";
