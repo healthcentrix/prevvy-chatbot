@@ -34,6 +34,8 @@ export class DialogFlowService {
         const stringData: string = await this.redis.getString(session);
         const data: IPrevvyComunicationData = JSON.parse(stringData);
 
+        console.log(data);
+
         if (data) {
             let feedBackData: IPrevvyFeedBackData = {};
 
@@ -66,8 +68,6 @@ export class DialogFlowService {
                 console.log(error);
                 textResponse = "An error occurred please try again";
             }
-
-            console.log(data);
 
             const translateResponse = await this.translate.translate(
                 textResponse,
