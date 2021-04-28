@@ -32,6 +32,9 @@ router.post(
             fulfillmentMessages[0].text
         );
 
+        console.log("***TExt");
+        console.log(response);
+
         return res.json({
             fulfillmentText: response,
         });
