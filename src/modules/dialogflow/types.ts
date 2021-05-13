@@ -11,6 +11,9 @@ export interface IDialogFlowParameter {
     time?: number;
     calories?: number;
     floor?: number;
+    evevation?: number;
+    water?: number;
+    elevation?: number;
 }
 
 export interface IValue {
@@ -34,4 +37,9 @@ export enum Codes {
     GLUCOSE = "2339-0",
     TEMPERATURE = "8310-5",
     OXYGEN = "59408-5",
+    STEPS = "steps",
+    DISTANCE = "distance",
+    WATER = "water",
+    ELEVATION = "elevation",
+    FLOORS = "floors",
 }

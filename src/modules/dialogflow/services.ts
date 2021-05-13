@@ -42,7 +42,16 @@ export class DialogFlowService {
 
             switch (data.dialogType) {
                 case DialogType.MONITORING_ACTIVITY:
-                    feedBackData = this.monitoringFitnessActivity(
+                    feedBackData = this.monitoringActivity(
+                        data.dialogSubType,
+                        data.communicationRequestID,
+                        parameters
+                    );
+
+                    break;
+
+                case DialogType.FITNESS_ACTIVITY:
+                    feedBackData = this.fitnessActivity(
                         data.dialogSubType,
                         data.communicationRequestID,
                         parameters
@@ -83,7 +92,7 @@ export class DialogFlowService {
         return "Sorry, I don't understand your request. I haven't asked you any request";
     }
 
-    private monitoringFitnessActivity(
+    private monitoringActivity(
         subType: DialogSubType,
         communicationRequestID: string,
         parameters: IDialogFlowParameter
@@ -158,5 +167,45 @@ export class DialogFlowService {
                     values: values,
                 };
         }
+    }
+
+    private fitnessActivity(
+        subType: DialogSubType,
+        communicationRequestID: string,
+        parameters: IDialogFlowParameter
+    ): IPrevvyFeedBackData {
+        const values: Array<IValue> = [
+            {
+                code: Codes.STEPS,
+                metric_name: "Steps",
+                value: parameters.steps,
+            },
+            {
+                code: Codes.DISTANCE,
+                metric_name: "Distance",
+                value: parameters.distance,
+            },
+            {
+                code: Codes.ELEVATION,
+                metric_name: "Elevation",
+                value: parameters.elevation,
+            },
+            {
+                code: Codes.WATER,
+                metric_name: "Water",
+                value: parameters.water,
+            },
+            {
+                code: Codes.FLOORS,
+                metric_name: "Floor",
+                value: parameters.floor,
+            },
+        ];
+
+        return {
+            communication_request_id: communicationRequestID,
+            done: true,
+            values: values,
+        };
     }
 }
