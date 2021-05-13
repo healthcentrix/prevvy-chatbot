@@ -14,6 +14,8 @@ export interface IDialogFlowParameter {
     evevation?: number;
     water?: number;
     elevation?: number;
+    affirmative?: string;
+    reason?: string;
 }
 
 export interface IValue {

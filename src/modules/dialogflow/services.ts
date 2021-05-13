@@ -52,11 +52,17 @@ export class DialogFlowService {
 
                 case DialogType.FITNESS_ACTIVITY:
                     feedBackData = this.fitnessActivity(
-                        data.dialogSubType,
                         data.communicationRequestID,
                         parameters
                     );
 
+                    break;
+
+                case DialogType.MEDICATION_ACTIVITY:
+                    feedBackData = await this.medicationActivity(
+                        data.communicationRequestID,
+                        parameters
+                    );
                     break;
 
                 default:
@@ -170,7 +176,6 @@ export class DialogFlowService {
     }
 
     private fitnessActivity(
-        subType: DialogSubType,
         communicationRequestID: string,
         parameters: IDialogFlowParameter
     ): IPrevvyFeedBackData {
@@ -206,6 +211,35 @@ export class DialogFlowService {
             communication_request_id: communicationRequestID,
             done: true,
             values: values,
+        };
+    }
+
+    private async medicationActivity(
+        communicationRequestID: string,
+        parameters: IDialogFlowParameter
+    ) {
+        const translatedAffirmative = await this.translate.translate(
+            parameters.affirmative,
+            "en"
+        );
+
+        const lowerTranslatedAffirmate = _.toLower(translatedAffirmative);
+
+        if (
+            lowerTranslatedAffirmate === "no" ||
+            lowerTranslatedAffirmate === "wrong" ||
+            lowerTranslatedAffirmate === "negative"
+        ) {
+            return {
+                communication_request_id: communicationRequestID,
+                done: false,
+                reason: parameters.reason,
+            };
+        }
+
+        return {
+            communication_request_id: communicationRequestID,
+            done: true,
         };
     }
 }
