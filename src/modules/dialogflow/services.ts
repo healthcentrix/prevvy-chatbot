@@ -37,6 +37,9 @@ export class DialogFlowService {
         console.log("***Data");
         console.log(data);
 
+        console.log("***Parameters***");
+        console.log(parameters);
+
         if (data) {
             let feedBackData: IPrevvyFeedBackData = {};
 
