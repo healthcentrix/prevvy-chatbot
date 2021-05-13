@@ -68,6 +68,13 @@ export class DialogFlowService {
                     );
                     break;
 
+                case DialogType.APPOINMENT_ACTIVITY:
+                    feedBackData = await this.appoinmentAcivity(
+                        data.communicationRequestID,
+                        parameters
+                    );
+                    break;
+
                 default:
                     break;
             }
@@ -218,6 +225,35 @@ export class DialogFlowService {
     }
 
     private async medicationActivity(
+        communicationRequestID: string,
+        parameters: IDialogFlowParameter
+    ) {
+        const translatedAffirmative = await this.translate.translate(
+            parameters.affirmative,
+            "en"
+        );
+
+        const lowerTranslatedAffirmate = _.toLower(translatedAffirmative);
+
+        if (
+            lowerTranslatedAffirmate === "no" ||
+            lowerTranslatedAffirmate === "wrong" ||
+            lowerTranslatedAffirmate === "negative"
+        ) {
+            return {
+                communication_request_id: communicationRequestID,
+                done: false,
+                reason: parameters.reason,
+            };
+        }
+
+        return {
+            communication_request_id: communicationRequestID,
+            done: true,
+        };
+    }
+
+    private async appoinmentAcivity(
         communicationRequestID: string,
         parameters: IDialogFlowParameter
     ) {
